@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: root
+      changes:
+        -insert:
+          tableName: permission
+          columns:
+            -column:
+              name: name
+              value: PERMISSION_ADMIN_COMPANY_MGR
+  - changeSet:
+      id: 2
+      author: root
+      changes:
+        -insert:
+          tableName: permission
+          columns:
+            -column:
+              name: name
+              value: PERMISSION_CLIENT_MGR
+  - changeSet:
+      id: 3
+      author: root
+      changes:
+        -insert:
+          tableName: permission
+          columns:
+            -column:
+              name: name
+              value: PERMISSION_CLIENT_EDIT_CONTRACT
+
+
+

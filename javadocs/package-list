@@ -1,0 +1,14 @@
+com.tracking.system
+com.tracking.system.company
+com.tracking.system.company.client
+com.tracking.system.company.contract
+com.tracking.system.company.contract.site
+com.tracking.system.company.contract.site.shift
+com.tracking.system.company.contract.site.shift.shiftevent
+com.tracking.system.company.contract.site.shiftconfiguration
+com.tracking.system.company.employee
+com.tracking.system.user
+com.tracking.system.user.mobiledevice
+com.tracking.system.utils
+com.tracking.system.utils.attachment
+com.tracking.system.utils.audit

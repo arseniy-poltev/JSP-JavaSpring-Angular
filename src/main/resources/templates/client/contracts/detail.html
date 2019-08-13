@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{client/layout}">
+
+<head>
+    <title>Index</title>
+</head>
+<div layout:fragment="page_content" id="page_content">
+    <div class="alert alert-primary" role="alert">
+        Contracts page <b>/View Detail of Contract</b>
+    </div>
+    <div class="jumbotron text-center col-md-4" style="margin:auto">
+        <!-- Title -->
+        <h2 class="card-title h2 blue-text">Google Coke Contract</h2>
+        <!-- Subtitle -->
+        <p class="black-text my-4 font-weight-bold">It belongs to Google Company</p>
+
+        <!-- Grid row -->
+        <div style="padding-left:20px">
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#!" class="black-text">
+                    <h6 th:inline="text" class="h6 pb-1"><i class="fas fa-desktop pr-1"></i>Name:
+                        <span th:text="${contract.getName()}" th:remove="tag">title</span>
+                    </h6>
+                </a>
+            </div>
+
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#!" class="black-text">
+                    <h6 class="h6 pb-1"><i class="fas fa-window-maximize pr-1"></i>Company Name:
+                        <span th:text="${contract.getName()}" th:remove="tag">title</span>
+                    </h6>
+                </a>
+            </div>
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#!" class="black-text">
+                    <h6 class="h6 pb-1"><i class="fas fa-user pr-1"></i>Customer Name:
+                        <span th:text="${contract.getCustomerName()}" th:remove="tag">title</span>
+                    </h6>
+                </a>
+            </div>
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#!" class="black-text">
+                    <h6 class="h6 pb-1"><i class="fas fa-user-circle pr-1"></i>Operation Manager Name:
+                        <span th:text="${contract.getOperationManagerName()}" th:remove="tag">title</span>
+                    </h6>
+                </a>
+            </div>
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#" class="blue-text">
+                    <h6 class="h6 pb-1"><i class="fas fa-map pr-1"></i>Sites: Show</h6>
+                </a>
+            </div>
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#" class="blue-text">
+                    <h6 class="h6 pb-1"><i class="fas fa-user-secret pr-1"></i>Employees: Show</h6>
+                </a>
+            </div>
+
+            <div class="row d-flex justify-content-left" style="padding-bottom:10px">
+                <a href="#!" class="black-text">
+                    <h6 class="h6 pb-1"><i class="fas fa-phone pr-1"></i>Contacts:
+                    </h6>
+                </a>
+                <table class="table">
+                    <thead class="blue-gradient white-text">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col"><i class="fa fa-inbox"></i>Email</th>
+                        <th scope="col"><i class="fas fa-phone pr-1"></i>Phone</th>
+                    </tr>
+                    </thead>
+                    <tbody class="black-text">
+                    <tr th:each="contact,iter:${contract.getContacts()}">
+                        <th scope="row" th:text="${iter.index+1}"></th>
+                        <td th:text="${contact.getName()}"></td>
+                        <td th:text="${contact.getEmail()}"></td>
+                        <td th:text="${contact.getPhone()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Grid row -->
+
+        <hr class="my-4">
+
+        <div class="pt-2">
+            <a role="button" class="btn btn-blue waves-effect" th:href="@{'/contract/edit/'+${contract.getId()}}">Edit Contract <span
+                    class="far fa-gem ml-1"></span></a>
+            <a role="button" class="btn btn-outline-primary waves-effect" th:href="@{'/contract/add'}">Create New <i
+                    class="fas fa-plus-square ml-1"></i></a>
+        </div>
+
+    </div>
+</div>
+<th:block layout:fragment="scripts">
+</th:block>

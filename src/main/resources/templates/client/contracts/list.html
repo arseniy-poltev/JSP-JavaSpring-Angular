@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{client/layout}">
+
+<head>
+    <title>Index</title>
+</head>
+<div layout:fragment="page_content" id="page_content">
+    <div class="alert alert-primary" role="alert">
+        Contracts page <b>/Contracts Table</b>
+    </div>
+    <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th class="th-sm">Company Name
+            </th>
+            <th class="th-sm">Contract Name
+            </th>
+            <th class="th-sm">Customer Name
+            </th>
+            <th class="th-sm">Operations Manager
+            </th>
+            <th class="th-sm">Status
+            </th>
+            <th class="th-sm">Actions
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="contract: ${contracts}">
+            <th scope="row">1</th>
+            <td th:text="${contract.getCompanyName()}"></td>
+            <td th:text="${contract.getName()}"></td>
+            <td th:text="${contract.getCustomerName()}"></td>
+            <td th:text="${contract.getOperationManagerName()}"></td>
+            <td th:text="${contract.getStatus()}"></td>
+            <td>
+                <button class="btn btn-success  btn-sm dropdown-toggle m-0" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                        class="fas fa-magic mr-1"></i>Actions
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" th:href="@{'/contract/detail/'+${contract.getId()}}">Detail</a>
+                    <a class="dropdown-item" th:href="@{'/contract/edit/'+${contract.getId()}}">Edit</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Show Sites</a>
+                    <a class="dropdown-item" href="#">Show Employees</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script type="text/javascript">
+        $(function () {
+            $('#dtBasicExample').DataTable();
+        });
+    </script>
+</th:block>

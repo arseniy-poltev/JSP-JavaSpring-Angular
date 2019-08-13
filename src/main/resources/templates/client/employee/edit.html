@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{client/layout}">
+
+<head>
+    <title>Index</title>
+</head>
+<div layout:fragment="page_content" id="page_content">
+    <div class="alert alert-primary" role="alert">
+        Contracts page <b>/Edit Detail of Employee</b>
+    </div>
+    <!-- Card Dark -->
+    <div class="row col-md-12">
+        <div class="card" style="margin:auto;width:30%">
+            <!-- Card image -->
+            <div>
+                <!-- <label for="mainImage">
+                    <img src="https://mdbootstrap.com/img/Photos/Others/men.jpg" alt="Placeholder"
+                        id="serviceImage"  class="card-img-top"
+                        alt="Card image cap" aria-describedby="imagePreviewHelp" />
+                </label> -->
+                <input type="file" class="form-control border p-1" id="mainImage" name="mainImage" hidden/>
+
+                <label for="mainImage" style="margin-bottom:0px;cursor:pointer">
+                    <img src="https://mdbootstrap.com/img/Photos/Others/men.jpg"
+                         id="serviceImage" class="card-img-top" alt="Card image cap"
+                         style="width:100%;height:320px"
+                         aria-describedby="imagePreviewHelp"/>
+                </label>
+
+                <a>
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+
+            <!-- Card content -->
+            <div class="card-body elegant-color white-text rounded-bottom">
+
+                <!-- Social shares button -->
+                <a class="activator waves-effect mr-4"><i class="fas fa-share-alt white-text"></i></a>
+                <!-- Title -->
+                <h4 class="card-title">Steve Lee</h4>
+                <hr class="hr-light">
+                <div class="row col-md-12">
+                    <div class="col-md-6">
+                        <h6>Login Name:</h6>
+                        <input type="text" id="loginName" class="form-control"
+                               th:value="${employee.getUserInfo().getLoginName()}"
+                               name="loginName" required
+                               style="margin-bottom:5px">
+
+                        <h6>First Name:</h6>
+                        <input type="text" id="firstName" class="form-control"
+                               th:value="${employee.getUserInfo().getFirstName()}"
+                               name="firstName" required
+                               style="margin-bottom:5px">
+
+                        <h6>Last Name:</h6>
+                        <input type="text" id="lastName" class="form-control"
+                               th:value="${employee.getUserInfo().getLastName()}"
+                               name="lastName" required
+                               style="margin-bottom:5px">
+
+                        <h6>Password:</h6>
+                        <input type="password" id="password" class="form-control"
+                               name="password"
+                               style="margin-bottom:5px">
+
+                        <h6>Status:</h6>
+                        <!--<input type="text" id="status" class="form-control"-->
+                               <!--th:value="${employee.getUserInfo().getStatus()}"-->
+                               <!--style="margin-bottom:5px">-->
+                        <select class="browser-default custom-select" name="status" th:value="${employee.getUserInfo().getStatus()}"
+                                style="margin-bottom:5px" required>
+                            <option selected disabled>Select Status</option>
+                            <option th:each="status:${statusList}" th:value="${status}"
+                                    th:selected="${status.equals(employee.getUserInfo().getStatus())}">
+                                <span th:text="${status}" th:remove="tag">title</span>
+                            </option>
+                        </select>
+
+                        <!--<h6>Activated on:</h6>-->
+                        <!--<input type="text" id="a" class="form-control" value="Google"-->
+                        <!--style="margin-bottom:5px">-->
+                    </div>
+                    <div class="col-md-6">
+                        <!--<h6>Activated on:</h6>-->
+                        <!--<input type="text" id="activatedOn" class="form-control"-->
+                               <!--th:value="${employee.getActivatedOn()}"-->
+                               <!--name="activatedOn"-->
+                               <!--style="margin-bottom:5px">-->
+                        <h6>Email:</h6>
+                        <input type="email" id="email" class="form-control"
+                               name="email"
+                               th:value="${employee.getUserInfo().getEmail()}"
+                               style="margin-bottom:5px">
+                        <h6>Phone:</h6>
+                        <input type="text" id="phone" class="form-control"
+                               name="phone"
+                               th:value="${employee.getUserInfo().getPhone()}"
+                               style="margin-bottom:5px">
+                        <h6>Personal ID:</h6>
+                        <input type="text" id="personalId" class="form-control"
+                               th:value="${employee.getPersonalId()}"
+                               name="personalId" required
+                               style="margin-bottom:5px">
+
+                        <h6>Work Type:</h6>
+                        <select class="browser-default custom-select" name="workType" required
+                                style="margin-bottom:5px" th:value="${employee.getWorkType()}">
+                            <option selected disabled>Select Work Type</option>
+                            <option th:each="workType:${workTypeList}" th:value="${workType}"
+                                    th:selected="${workType.equals(employee.getWorkType())}">
+                                <span th:text="${workType}" th:remove="tag">title</span>
+                            </option>
+                        </select>
+
+                        <h6>Employee Type:</h6>
+                        <select class="browser-default custom-select" name="employeeType" th:value="${employee.getEmployeeType()}"
+                                style="margin-bottom:5px" required>
+                            <option selected disabled>Select Employee Type</option>
+                            <option th:each="employeeType:${employeeTypeList}" th:value="${employeeType}"
+                                    th:selected="${employeeType.equals(employee.getEmployeeType())}">
+                                <span th:text="${employeeType}" th:remove="tag">title</span>
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <!-- Text -->
+                <p class="card-text white-text mb-4"></p>
+                <hr class="my-4">
+
+                <div class="pt-2">
+                    <button type="submit" class="btn btn-blue waves-effect" style="float: right;">SAVE</button>
+                    <button type="button" class="btn btn-outline-primary waves-effect" id="btnDefault"
+                            style="float: right;">DEFAULT
+                    </button>
+                </div>
+                <!-- Link -->
+                <!-- <a href="#!" class="white-text d-flex justify-content-end">
+                    <h5>Read more <i class="fas fa-angle-double-right"></i></h5>
+                </a> -->
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="scripts">
+    <script>
+        function uploadPreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    if (e.target.result.trim().length == 0) {
+                        $('#serviceImage').attr('src', '//catawbabrewing.com/wp-content/themes/catawba/images/placeholder.png');
+                    } else {
+                        $('#serviceImage').attr('src', e.target.result);
+                    }
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function uploadPreviewExt(input) {
+            if (input.trim().length == 0) {
+                var previewSrc = '{{CSS_URL}}/images/placeholder.jpg';
+            } else {
+                var previewSrc = input;
+            }
+
+            $('#serviceImage').attr('src', previewSrc);
+        }
+
+        function resetUploadPreview() {
+            if (!$('#previousImage').val()) {
+                $('#serviceImage').attr('src', 'http://catawbabrewing.com/wp-content/themes/catawba/images/placeholder.png');
+            } else {
+                $('#serviceImage').attr('src', '{{PROD_IMG}}/' + $('#previousImage').val());
+            }
+        }
+
+        $("#mainImage").change(function () {
+            uploadPreview(this);
+        });
+
+        $('[name="mainImgExt"]').on('change', function () {
+            uploadPreviewExt(this.value);
+        });
+
+        $('#clearUpload').on('click', function () {
+            $('#mainImage').val('');
+
+            if ($('#imgExt').val().trim().length == 0) {
+                resetUploadPreview();
+            } else {
+                uploadPreviewExt($('#imgExt').val());
+            }
+        });
+
+        $('#clearUploadExt').on('click', function () {
+            $('#imgExt').val('');
+
+            if (!$('#mainImage').val()) {
+                resetUploadPreview();
+            } else {
+                uploadPreview($('#mainImage')[0]);
+            }
+        });
+        $("#btnDefault").on('click', function () {
+            window.location.reload(true);
+        });
+    </script>
+</th:block>

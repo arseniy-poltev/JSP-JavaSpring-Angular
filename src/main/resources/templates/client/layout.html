@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Base</title>
+    <meta name="description" content=""/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link href="/MDB/css/bootstrap.min.css" rel="stylesheet" th:href="@{/MDB/css/bootstrap.min.css}">
+    <!-- Material Design Bootstrap -->
+    <link href="/MDB/css/mdb.min.css" rel="stylesheet" th:href="@{/MDB/css/mdb.min.css}">
+    <!-- Your custom styles (optional) -->
+    <link href="/MDB/css/style.css" rel="stylesheet" th:href="@{/MDB/css/style.css}">
+    <link href="/MDB/css/toastr.min.css" rel="stylesheet" th:href="@{/MDB/css/toastr.min.css}">
+    <link href="css/addons/datatables.min.css" rel="stylesheet" th:href="@{/MDB/css/addons/datatables.min.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+</head>
+
+<body class="fixed-sn light-blue-skin">
+<header>
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark elegant-color lighten-1 fixed-top">
+        <a class="navbar-brand" href="#">PTSystem</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+                aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-555" style="padding-left:30px">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown"
+                    th:class="${tag == null ? 'nav-item dropdown' : (tag.equals('contract')?'nav-item dropdown active':'nav-item dropdown')}">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false" id="contractDropDownMenu"><i class="fa fa-book" aria-hidden=""></i>
+                        Contracts
+                        <span class="sr-only">(current)</span>
+
+                    </a>
+                    <div class="dropdown-menu dropdown-secondary" aria-labelledby="contractDropDownMenu">
+                        <a class="dropdown-item" th:href="@{/contract/list}">Contracts</a>
+                        <a class="dropdown-item" th:href="@{/site/list}">Sites</a>
+                        <a class="dropdown-item" th:href="@{/employee/list}">Employees</a>
+                        <a class="dropdown-item" th:href="@{/contract/list}">Shifts</a>
+                        <a class="dropdown-item" th:href="@{/contract/list}">Add Employee</a>
+                        <a class="dropdown-item" th:href="@{/contract/add}">Add Contract</a>
+                        <a class="dropdown-item" th:href="@{/site/add}">Add Site</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-plug" aria-hidden=""></i> Operations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa fa-users" aria-hidden=""></i> Users</a>
+                </li>
+            </ul>
+            <span class="navbar-text white-text" style="font-weight:800">
+          <i class="fa fa-building"></i>
+          Company Name:
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authentication="principal.companyName"></span>
+                </span>
+        </span>
+            <form class="form-inline my-2 my-lg-0 ml-auto">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Search</button>
+            </form>
+
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light">1
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item avatar dropdown">
+
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <!-- <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0"
+                          alt="avatar image" style="width:25px"> -->
+                        <span sec:authorize="isAuthenticated()">
+                            <span sec:authentication="name" style="color: white"></span>
+                        </span>
+
+                        <i class="fa fa-user-circle"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-secondary"
+                         aria-labelledby="navbarDropdownMenuLink-55">
+                        <a class="dropdown-item" href="#">View Profile</a>
+                        <a class="dropdown-item" href="javascript: document.logoutForm.submit()">Logout</a>
+                        <span sec:authorize="isAuthenticated()">
+                            <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                                <input hidden type="submit" value="logout"/>
+                            </form>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--/.Navbar -->
+    <!--/.Navbar-->
+
+</header>
+
+<main class="mt-5" style="min-height:80vh">
+    <div class="" style="padding:40px">
+        <div layout:fragment="page_content"></div>
+    </div>
+</main>
+
+<footer class="page-footer font-small elegant-color darken-3">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12 py-5">
+
+                <div class="mb-5 flex-center">
+                    <!--<span sec:authorize="isAuthenticated()">-->
+                    <!--| Logged user: <span sec:authentication="name"></span> |-->
+                    <!--Roles: <span sec:authentication="principal.authorities"></span> |-->
+
+                    <!--<span sec:authentication="principal.companyName"></span>-->
+
+                    <!--<form action="#" th:action="@{/logout}" method="post">-->
+                    <!--<button class="btn btn-sm btn-primary btn-block" type="submit">Logout</button>-->
+                    <!--</form>-->
+                    <!--</span>-->
+                    <a class="fb-ic">
+                        <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
+                    <a class="tw-ic">
+                        <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
+                    <a class="gplus-ic">
+                        <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
+                    <a class="li-ic">
+                        <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
+                    <a class="ins-ic">
+                        <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                    </a>
+                    <a class="pin-ic">
+                        <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2018 Copyright:
+        <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<script type="text/javascript" src="/MDB/js/jquery-3.3.1.min.js" th:src="@{/MDB/js/jquery-3.3.1.min.js}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="/MDB/js/popper.min.js" th:src="@{/MDB/js/popper.min.js}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="/MDB/js/bootstrap.min.js" th:src="@{/MDB/js/bootstrap.min.js}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="/MDB/js/mdb.min.js" th:src="@{/MDB/js/mdb.min.js}"></script>
+<script src="/MDB/js/toastr.min.js" type="text/javascript" th:src="@{/MDB/js/toastr.min.js}"></script>
+<script type="text/javascript" src="/MDB/js/addons/datatables.min.js"
+        th:src="@{/MDB/js/addons/datatables.min.js}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<script>
+    $(function () {
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "1000",
+            "hideDuration": "1000",
+            "timeOut": "1000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    });
+</script>
+<th:block layout:fragment="scripts">
+</th:block>
+</body>
+</html>

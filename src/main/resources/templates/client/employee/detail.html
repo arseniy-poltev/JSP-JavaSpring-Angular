@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{client/layout}">
+
+<head>
+    <title>Index</title>
+</head>
+<div layout:fragment="page_content" id="page_content">
+    <div class="alert alert-primary" role="alert">
+        Contracts page <b>/View Detail of Employee</b>
+    </div>
+    <!-- Card Dark -->
+    <div class="row col-md-12">
+        <div class="card" style="margin:auto;width:30%">
+
+            <!-- Card image -->
+            <div class="view overlay">
+                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/men.jpg"
+                     alt="Card image cap">
+                <a>
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+
+            <!-- Card content -->
+            <div class="card-body elegant-color white-text rounded-bottom">
+
+                <!-- Social shares button -->
+                <a class="activator waves-effect mr-4"><i class="fas fa-share-alt white-text"></i></a>
+                <!-- Title -->
+                <input type="hidden" th:value="${employee.getId()}" id="employeeID">
+                <h4 class="card-title" th:value="${employee.getUserInfo().getLoginName()}"></h4>
+                <hr class="hr-light">
+                <div class="row col-md-12">
+                    <div class="col-md-6">
+                        <h6>Login Name:</h6>
+                        <p class="blue-text" th:text="${employee.getUserInfo().getLoginName()}"></p>
+                        <h6>Status:</h6>
+                        <p id="status" class="blue-text" th:text="${employee.getUserInfo().getStatus()}"></p>
+                        <h6>First Name:</h6>
+                        <p id="firstName" class="blue-text" th:text="${employee.getUserInfo().getFirstName()}"></p>
+                        <h6>Last Name:</h6>
+                        <p id="lastName" class="blue-text" th:text="${employee.getUserInfo().getLastName()}"></p>
+                        <h6>Email:</h6>
+                        <p class="blue-text" th:text="${employee.getUserInfo().getEmail()}"></p>
+                        <h6>Phone:</h6>
+                        <p class="blue-text" th:text="${employee.getUserInfo().getPhone()}"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Activated on:</h6>
+                        <p class="blue-text" th:text="${employee.getActivatedOn()}"></p>
+                        <h6>Personal ID:</h6>
+                        <p class="blue-text" th:text="${employee.getPersonalId()}"></p>
+                        <h6>Work Type:</h6>
+                        <p class="blue-text" th:text="${employee.getWorkType()}"></p>
+                        <h6>Assigned Contract:</h6>
+                        <p id="assignedContract" class="blue-text" th:text="${employee.getAssignedContractName()}"></p>
+                        <h6>Employee Type:</h6>
+                        <p class="blue-text" th:text="${employee.getEmployeeType()}"></p>
+                        <h6>Actions:</h6>
+                        <button class="btn btn-primary btn-sm dropdown-toggle m-0" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                class="fas fa-magic mr-1"></i>Actions
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" id="btnEnable">Enable</a>
+                            <a class="dropdown-item" id="btnDisable">Disable</a>
+                            <a class="dropdown-item"
+                               th:href="@{'/employee/edit/'+${employee.getId()}}">Edit</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" th:value="${employee.getId()}"
+                               data-target="#assignToSiteModal">Assign to a site</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" th:value="${employee.getId()}"
+                               data-target="#confirmRemoveModal">Remove from a site</a>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Text -->
+
+
+                <p class="card-text white-text mb-4">
+                    <!--He is our employee-->
+                </p>
+                <!-- Link -->
+                <!-- <a href="#!" class="white-text d-flex justify-content-end">
+                    <h5>Read more <i class="fas fa-angle-double-right"></i></h5>
+                </a> -->
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="assignToSiteModal" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Assign to a site</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Employee: Steve Lee</h4>
+
+                    <div class="input-field col s12 input-wrap clear" style="padding-top:10px">
+                        <select name="contractId" class="form-control" id="contractId" style="padding-left: 20px"
+                                required>
+                            <option value="" disabled selected>Choose a Contract</option>
+                            <option th:each="contract:${contracts}" th:value="${contract.getId()}">
+                                <span th:text="${contract.getName()}" th:remove="tag">title</span>
+                            </option>
+                        </select>
+                    </div>
+                    <div style="width:100%">
+                        <div class="row">
+                            <div class="spinner-border text-success" role="status" id="loadingSpinner"
+                                 style="margin:auto;margin-top:10px">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div id="siteDiv" style="margin:auto;margin-top:10px;">
+                            <table class="table" style="width:100%">
+                                <thead class="blue-gradient white-text">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Site Name</th>
+                                    <th scope="col"><i class="fa fa-inbox"></i>Email</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="black-text">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Frame Modal Bottom -->
+    <div class="modal fade bottom" id="confirmAssignModal" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+        <div class="modal-dialog modal-frame modal-bottom" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center">
+
+                        <p class="pt-3 pr-2">You are going to assing Steve Lee to Coker Site!
+                        </p>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="spinner-border text-success" role="status" id="confirmAssignSpinner">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="assignConfirm">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bottom" id="confirmRemoveModal" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+        <div class="modal-dialog modal-frame modal-bottom" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center">
+
+                        <p class="pt-3 pr-2">You are going to remove Steve Lee from Coker Site!
+                        </p>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="spinner-border text-success" role="status" id="confirmRemoveSpinner">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="removeConfirm">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript">
+        let selectedSite = -1;
+        let selectedEmployee = -1;
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        console.log(token);
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+        $(function () {
+            selectedEmployee = $("#employeeID").val();
+            $('.modal-body select').select2({width: "100%"});
+            $("#loadingSpinner").hide();
+            $("#siteDiv").hide();
+            $("#confirmAssignSpinner").hide();
+        });
+        $("td .dropdown-item").on('click',function(){
+            alert($(this).attr("value"));
+            selectedEmployee = $(this).attr("value");
+        });
+        $("#assignConfirm").click(function () {
+            if(selectedSite === -1 || selectedEmployee === -1){
+                alert("Error!");
+                return;
+            }
+            $("#confirmAssignSpinner").show();
+            $(this).hide();
+            $.ajax({
+                type:'post',
+                data:{
+                    employeeId:selectedEmployee,
+                    siteId:selectedSite
+                },
+                url:'/employee/action/assign',
+                success:function(response){
+                    if(response.status === "success"){
+                        toastr.success('Assigning success!');
+                        let id = "row"+selectedEmployee;
+                        //assigned contract
+                        $("#assignedContract").html(response.message);
+                    }else{
+                        toastr.error(response.message);
+                    }
+                    $("#confirmAssignModal").modal('hide');
+                    $("#assignToSiteModal").modal('hide');
+                }
+            });
+        });
+        $("#removeConfirm").click(function () {
+            $("#confirmRemoveSpinner").show();
+            $(this).hide();
+            $.ajax({
+                type:'post',
+                data:{
+                    employeeId:selectedEmployee
+                },
+                url:'/employee/action/remove',
+                success:function(response){
+                    if(response.status === "success"){
+                        toastr.success('Removing success!');
+                        let id = "row"+selectedEmployee;
+                        //assigned contract
+                        $("#assignedContract").html("");
+                    }else{
+                        toastr.error(response.message);
+                    }
+                    $("#confirmRemoveModal").modal('hide');
+                }
+            });
+        });
+        $("#confirmAssignModal").on('show.bs.modal', function () {
+            $("#assignConfirm").show();
+            $("#confirmAssignSpinner").hide();
+        });
+        $("#confirmRemoveModal").on('show.bs.modal', function () {
+            $("#removeConfirm").show();
+            $("#confirmRemoveSpinner").hide();
+        });
+        $("#assignToSiteModal").on('show.bs.modal', function () {
+            //$(".modal-body select").val(-1);
+        });
+
+
+        $('select').on('change', function () {
+            $("#loadingSpinner").show();
+            $("#siteDiv").hide();
+            $.ajax({
+                type: "post",
+                data: {
+                    contractId: $(this).val()
+                },
+                url: "/site/get",
+                success: function (sites) {
+                    console.log(sites);
+                    $("#loadingSpinner").hide();
+                    $("#siteDiv").show();
+                    $("#siteDiv tbody").html("");
+                    let html = "";
+                    for (let i = 0; i < sites.length; i++) {
+                        let column1 = '<td>' + (i + 1) + '</td>';
+                        let column2 = '<td>' + sites[i].name + '</td>>';
+                        let column3 = '<td>' + sites[i].businessContactEmail + '</td>';
+                        let column4 = '<td>\n' +
+                            '<button id="'+ sites[i].id +'" class="btn btn-success  btn-sm m-0" type="button"\n' +
+                            'data-toggle="modal" data-target="#confirmAssignModal"\n' +
+                            'aria-expanded="false"><i\n' +
+                            'class="fas fa-magic mr-1"></i>Assign\n' +
+                            '</button>\n' +
+                            '</td>';
+                        html += ('<tr>'+column1+column2+column3+column4+'</tr>');
+                    }
+                    $("#siteDiv tbody").html(html);
+                }
+            });
+        });
+        $("#btnEnable").on('click',function(){
+           $.ajax({
+               type:'post',
+               data:{
+                 employeeId:selectedEmployee
+               },
+               url:'/employee/action/enable',
+               success:function(response){
+                   if(response.status === "success"){
+                       toastr.success('Enable success!');
+                       $("#status").html("active");
+                   }
+               }
+           })
+        });
+        $("#btnDisable").on('click',function(){
+            $.ajax({
+                type:'post',
+                data:{
+                    employeeId:selectedEmployee
+                },
+                url:'/employee/action/disable',
+                success:function(response){
+                    if(response.status === "success"){
+                        toastr.success('Disable success!');
+                        $("#status").html("suspended");
+                    }
+                }
+            })
+        });
+        $(document).on('click','#siteDiv button',function(){
+            alert($(this).attr("id"));
+            selectedSite = $(this).attr("id");
+        });
+    </script>
+</th:block>

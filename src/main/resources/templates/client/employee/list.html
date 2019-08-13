@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{client/layout}">
+
+<head>
+    <title>Index</title>
+</head>
+<div layout:fragment="page_content" id="page_content">
+    <div class="alert alert-primary" role="alert">
+        Contracts page <b>/Employee Table</b>
+    </div>
+    <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th class="th-sm">First Name
+            </th>
+            <th class="th-sm">Last Name
+            </th>
+            <th class="th-sm">Login Name
+            </th>
+            <th class="th-sm">Status
+            </th>
+            <th class="th-sm">Email
+            </th>
+            <th class="th-sm">Phone
+            </th>
+            <th class="th-sm">Activated On
+            </th>
+            <th class="th-sm">Personal ID
+            </th>
+            <th class="th-sm">Work Type
+            </th>
+            <th class="th-sm">Assigned Contact
+            </th>
+            <th class="th-sm">Employee Type
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee,iter:${employees}" th:id="'row'+${employee.getId()}">
+            <th scope="row" th:text="${iter.index+1}"></th>
+            <td th:text="${employee.getUserInfo().getFirstName()}"></td>
+            <td th:text="${employee.getUserInfo().getLastName()}"></td>
+            <td th:text="${employee.getUserInfo().getLoginName()}"></td>
+            <td th:text="${employee.getUserInfo().getStatus()}"></td>
+            <td th:text="${employee.getUserInfo().getEmail()}"></td>
+            <td th:text="${employee.getUserInfo().getPhone()}"></td>
+            <td th:text="${employee.getActivatedOn()}"></td>
+            <td th:text="${employee.getPersonalId()}"></td>
+            <td th:text="${employee.getWorkType()}"></td>
+            <td th:text="${employee.getAssignedContractName()}"></td>
+            <td th:text="${employee.getEmployeeType()}"></td>
+            <td>
+                <button class="btn btn-success btn-sm dropdown-toggle m-0" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                        class="fas fa-magic mr-1"></i>Actions
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" th:href="@{'/employee/detail/'+${employee.getId()}}">View Detail</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" th:value="${employee.getId()}"
+                       data-target="#assignToSiteModal">Assign to a site</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" th:value="${employee.getId()}"
+                       data-target="#confirmRemoveModal">Remove from a site</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="modal fade" id="assignToSiteModal" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Assign to a site</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="employeeName"></h4>
+
+                    <div class="input-field col s12 input-wrap clear" style="padding-top:10px">
+                        <select name="contractId" class="form-control" id="contractId" style="padding-left: 20px"
+                                required>
+                            <option value="" disabled selected>Choose a Contract</option>
+                            <option th:each="contract:${contracts}" th:value="${contract.getId()}">
+                                <span th:text="${contract.getName()}" th:remove="tag">title</span>
+                            </option>
+                        </select>
+                    </div>
+                    <div style="width:100%">
+                        <div class="row">
+                            <div class="spinner-border text-success" role="status" id="loadingSpinner"
+                                 style="margin:auto;margin-top:10px">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+
+                        <div id="siteDiv" style="margin:auto;margin-top:10px;">
+                            <table class="table" style="width:100%">
+                                <thead class="blue-gradient white-text">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Site Name</th>
+                                    <th scope="col"><i class="fa fa-inbox"></i>Email</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="black-text">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Frame Modal Bottom -->
+    <div class="modal fade bottom" id="confirmAssignModal" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+        <div class="modal-dialog modal-frame modal-bottom" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center">
+
+                        <p class="pt-3 pr-2">You are going to assing <span class="employeeName"></span>
+                        </p>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="spinner-border text-success" role="status" id="confirmAssignSpinner">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="assignConfirm">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bottom" id="confirmRemoveModal" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+        <div class="modal-dialog modal-frame modal-bottom" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row d-flex justify-content-center align-items-center">
+
+                        <p class="pt-3 pr-2">You are going to remove <span class="employeeName"></span>
+                        </p>
+
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="spinner-border text-success" role="status" id="confirmRemoveSpinner">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="removeConfirm">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="scripts">
+    <script type="text/javascript">
+        let selectedSite = -1;
+        let selectedEmployee = -1;
+        let selectedEmployeeName = '';
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        console.log(token);
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+        $(function () {
+            $('#dtBasicExample').DataTable();
+            $('.modal-body select').select2({width: "100%"});
+            $("#loadingSpinner").hide();
+            $("#siteDiv").hide();
+            $("#confirmAssignSpinner").hide();
+        });
+        $("td .dropdown-item").on('click',function(){
+            alert($(this).attr("value"));
+            selectedEmployeeName = $(this).closest("tr").children().eq(3).attr("value");
+            selectedEmployee = $(this).attr("value");
+        });
+        $("#assignConfirm").click(function () {
+            if(selectedSite === -1 || selectedEmployee === -1){
+                alert("Error!");
+                return;
+            }
+            $("#confirmAssignSpinner").show();
+            $(this).hide();
+            $.ajax({
+               type:'post',
+               data:{
+                   employeeId:selectedEmployee,
+                   siteId:selectedSite
+               },
+               url:'/employee/action/assign',
+               success:function(response){
+                   if(response.status === "success"){
+                       toastr.success('Assigning success!');
+                       let id = "row"+selectedEmployee;
+                       //assigned contract
+                       $("#" + id).children().eq(10).html(response.message);
+                   }else{
+                       toastr.error(response.message);
+                   }
+                   $("#confirmAssignModal").modal('hide');
+                   $("#assignToSiteModal").modal('hide');
+               }
+            });
+        });
+        $("#removeConfirm").click(function () {
+            $("#confirmRemoveSpinner").show();
+            $(this).hide();
+            $.ajax({
+               type:'post',
+               data:{
+                 employeeId:selectedEmployee
+               },
+               url:'/employee/action/remove',
+               success:function(response){
+                   if(response.status === "success"){
+                       toastr.success('Removing success!');
+                       let id = "row"+selectedEmployee;
+                       //assigned contract
+                       $("#" + id).children().eq(10).html("");
+                   }else{
+                       toastr.error(response.message);
+                   }
+                   $("#confirmRemoveModal").modal('hide');
+               }
+            });
+        });
+        $("#confirmAssignModal").on('show.bs.modal', function () {
+            $("#assignConfirm").show();
+            $("#confirmAssignSpinner").hide();
+        });
+        $("#confirmRemoveModal").on('show.bs.modal', function () {
+            $("#removeConfirm").show();
+            $("#confirmRemoveSpinner").hide();
+        });
+        $("#assignToSiteModal").on('show.bs.modal', function () {
+            //$(".modal-body select").val(-1);
+            $(".employeeName").html("Employee: "+selectedEmployee);
+        });
+
+
+        $('select').on('change', function () {
+            $("#loadingSpinner").show();
+            $("#siteDiv").hide();
+            $.ajax({
+                type: "post",
+                data: {
+                    contractId: $(this).val()
+                },
+                url: "/site/get",
+                success: function (sites) {
+                    console.log(sites);
+                    $("#loadingSpinner").hide();
+                    $("#siteDiv").show();
+                    $("#siteDiv tbody").html("");
+                    let html = "";
+                    for (let i = 0; i < sites.length; i++) {
+                        let column1 = '<td>' + (i + 1) + '</td>';
+                        let column2 = '<td>' + sites[i].name + '</td>>';
+                        let column3 = '<td>' + sites[i].businessContactEmail + '</td>';
+                        let column4 = '<td>\n' +
+                            '<button id="'+ sites[i].id +'" class="btn btn-success  btn-sm m-0" type="button"\n' +
+                            'data-toggle="modal" data-target="#confirmAssignModal"\n' +
+                            'aria-expanded="false"><i\n' +
+                            'class="fas fa-magic mr-1"></i>Assign\n' +
+                            '</button>\n' +
+                            '</td>';
+                        html += ('<tr>'+column1+column2+column3+column4+'</tr>');
+                    }
+                    $("#siteDiv tbody").html(html);
+                }
+            });
+        });
+        $(document).on('click','#siteDiv button',function(){
+           alert($(this).attr("id"));
+            selectedSite = $(this).attr("id");
+        });
+    </script>
+</th:block>
